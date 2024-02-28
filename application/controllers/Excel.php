@@ -46,12 +46,15 @@ class Excel extends CI_Controller
 
         foreach ($data['Laporan'] as $lpr) {
             $tanggal_pengembalian = new DateTime($lpr->tanggal_pengembalian);
-            $tanggal_sekarang = new DateTime();
-            $selisih = $tanggal_sekarang->diff($tanggal_pengembalian)->format("%a");
-            $fine_amount = 0; // Default value if not overdue
-            if ($tanggal_pengembalian < $tanggal_sekarang && $selisih > 0) {
+            $tanggal_kembali = new DateTime($lpr->tanggal_kembalikan);
+
+            // Periksa apakah pengembalian dilakukan lebih lambat dari tanggal pengembalian
+            if ($tanggal_kembali > $tanggal_pengembalian) {
+                $selisih = $tanggal_kembali->diff($tanggal_pengembalian)->format("%a");
                 $fine_amount = $selisih * 2500; // Rp 2,500 per day
-            }
+                } else {
+                $fine_amount = 0; // Tidak ada denda jika pengembalian tepat waktu
+                }
             $sheet = $spreadsheet->getActiveSheet()->setCellValue('A'.$baris, $no++);
             $sheet = $spreadsheet->getActiveSheet()->setCellValue('B'.$baris, $lpr->nama);
             $sheet = $spreadsheet->getActiveSheet()->setCellValue('C'.$baris, $lpr->judul);

@@ -63,8 +63,12 @@ class Model_Peminjaman extends CI_Model
         $this->db->delete('peminjaman');
     }
 
+    public function get_pengembalian_perbulan() {
+        $query = $this->db->query("SELECT MONTHNAME(tanggal_peminjaman) as bulan, COUNT(id_pengembalian) as jumlah_pengembalian FROM pengembalian GROUP BY MONTH(tanggal_peminjaman)");
+        return $query->result();
+    }
     public function get_peminjaman_perbulan() {
-        $query = $this->db->query("SELECT MONTHNAME(tanggal_peminjaman) as bulan, COUNT(id_pengembalian) as jumlah_peminjaman FROM pengembalian GROUP BY MONTH(tanggal_peminjaman)");
+        $query = $this->db->query("SELECT MONTHNAME(tanggal_peminjaman) as bulan, COUNT(id_peminjaman) as jumlah_peminjaman FROM peminjaman GROUP BY MONTH(tanggal_peminjaman)");
         return $query->result();
     }
 }

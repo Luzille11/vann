@@ -13,10 +13,6 @@ class Pengembalian extends CI_Controller
     
     function pengembalian() 
     {
-        $user_role = $this->session->userdata('level');
-        if ($user_role == 'peminjam') {
-            redirect('dashboard');
-        }
         $this->load->model('Model_pengembalian');
 
         $data['Pengembalian'] = $this->Model_pengembalian->getDataPengembalian()->result();

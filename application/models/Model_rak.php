@@ -16,4 +16,9 @@ class Model_Rak extends CI_Model
             return 0;
         }
     }
+
+    function DeleteDataRak($tabel,$fieldid,$fieldvalue)
+    {
+        $this->db->where($fieldid,$fieldvalue)->delete($tabel);
+    }
 }

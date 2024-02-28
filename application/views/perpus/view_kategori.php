@@ -17,7 +17,16 @@
                         Tambah Data
                     </button>
                 </div>
-                <div class="mb-3"><?php echo $this->session->flashdata('msg'); ?></div>
+                <br>
+                    <!-- Tampilan Anda -->
+                    <div class="mb-3"><?php echo $this->session->flashdata('msg'); ?></div>
+                    <script>
+                    // Tunggu selama 3 detik setelah halaman dimuat
+                    setTimeout(function() {
+                    // Sembunyikan pesan alert dengan menghapus elemen
+                    document.querySelector('.alert').style.display = 'none';
+                    }, 3000);
+                    </script>                
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
@@ -42,12 +51,12 @@
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editkategori_<?php echo $k->id_kategori; ?>">
                                         <i class="nav-icon fas fa-pen"></i>
-                                        Edit</button>
+                                        </button>
                                     <a href="<?php echo site_url('Kategori/hapuskategori/'.$k->id_kategori)?>"
                                         onclick="return confirm('Apakah anda ingin menghapus data ?')"
                                         class="btn btn-danger">
                                         <i class="nav-icon fas fa-trash"></i>
-                                        Hapus
+                                        
                                     </a>
                                 </td>
                             </tr>

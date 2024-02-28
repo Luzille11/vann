@@ -22,13 +22,12 @@ class Laporan extends CI_Controller
     public function metode_filter() {
         $tanggalAwal = $this->input->post('tanggalAwal');
         $tanggalAkhir = $this->input->post('tanggalAkhir');
+          
+        $data['Pengembalian'] = $this->Model_laporan->get_data_filtered($tanggalAwal, $tanggalAkhir);
+        $data['user'] = $this->Model_user->getDataUser()->result();
+        $data['buku'] = $this->Model_buku->getDataBuku()->result();
      
-        // Validasi tanggal atau lakukan operasi lain yang diperlukan
-     
-        $data['Laporan'] = $this->Model_laporan->get_data_filtered($tanggalAwal, $tanggalAkhir);
-     
-        // Kirim data ke view
-        $this->template->load('template/template', 'perpus/view_laporan', $data);
+        $this->load->view('cetak', $data);
      }
      
     public function cetak()
@@ -37,6 +36,16 @@ class Laporan extends CI_Controller
         $data['user'] = $this->Model_user->getDataUser()->result();
         $data['buku'] = $this->Model_buku->getDataBuku()->result();
         $this->load->view('cetak', $data);
+    }
+    public function cetakfilter()
+    {
+        $tanggalAwal = $this->input->get('tanggalAwal');
+        $tanggalAkhir = $this->input->get('tanggalAkhir');
+        $data['Pengembalian'] = $this->Model_laporan->get_data_filtered($tanggalAwal, $tanggalAkhir);
+        $data['Pengembalian'] = $this->Model_laporan->getAllData()->result();
+        $data['user'] = $this->Model_user->getDataUser()->result();
+        $data['buku'] = $this->Model_buku->getDataBuku()->result();
+        $this->load->view('cetakfilter', $data);
     }
 
 }

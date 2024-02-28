@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/dist/css/adminlte.min.css">
 </head>
 
-<body class="hold-transition register-page">
+<body class="hold-transition register-page" style="background-image: url('<?php echo base_url('assets/dist/img/buku2.jpg'); ?>'); background-size: cover;">
     <div class="register-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
@@ -49,7 +49,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Email</label>
-                        <input type="text" name="email" class="form-control" placeholder="Masukkan Email">
+                        <input type="email" name="email" class="form-control" placeholder="Masukkan Email">
                     </div>
                     <div class="form-group mb-3">
                         <label>Alamat</label>
@@ -57,13 +57,10 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Nomor Telepon</label>
-                        <input type="text" name="no_telp" class="form-control" placeholder="Masukkan Nomor Telepon">
+                        <input type="tel"  pattern="[0-9]+" name="no_telp" class="form-control" placeholder="Masukkan Nomor Telepon">
                     </div>
-                    <div class="form-group mb-3">
-                        <select name="level" class="form-control">
-                            <option selected>Pilih Level</option>
-                            <option value="peminjam">Peminjam</i></option>
-                        </select>
+                    <div class="form-group mb-3" hidden>
+                    <input type="text" name="level" class="form-control" value="peminjam" hidden>
                     </div>
                     <!-- /.col -->
                     <div class="text-center mt-2 mb-3">

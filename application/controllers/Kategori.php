@@ -25,9 +25,20 @@ class Kategori extends CI_Controller
 	{
 		$a = $this->uri->segment(3);
 
-		$this->Model_kategori->DeleteDataKategori('kategori', 'id_kategori', $a);
-
-		redirect('Kategori/kategori');
+        $hapus = $this->Model_kategori->DeleteDataKategori('kategori', 'id_kategori', $a);
+        if($hapus == 1) {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-check"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('Kategori/kategori');
+        }else {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-xmark"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('Kategori/kategori');
+        }
 	}
 
     function tambahkategori()

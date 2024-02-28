@@ -54,15 +54,15 @@ class Ulasan extends CI_Controller
 
     function tambahulasan() 
     {
+        if ($this->session->userdata('id_user')) {
         $id_ulasan = $this->input->post('id_ulasan');
-        $user = $this->input->post('user');
         $buku = $this->input->post('buku');
         $ulasan = $this->input->post('ulasan');
         $rating = $this->input->post('rating');
 
         $data = array(
             'id_ulasan' => $id_ulasan,
-            'id_user' => $user,
+            'id_user' => $this->session->userdata('id_user'),
             'id_buku' => $buku,
             'ulasan' => $ulasan,
             'rating' => $rating
@@ -82,6 +82,7 @@ class Ulasan extends CI_Controller
             </div>');
             redirect('Ulasan/ulasan');
         }
+    }
     }
 
     public function editulasan()
@@ -128,8 +129,19 @@ class Ulasan extends CI_Controller
 	{
 		$a = $this->uri->segment(3);
 
-		$this->Model_ulasan->DeleteDataUlasan('ulasan', 'id_ulasan', $a);
-
-		redirect('Ulasan/ulasan');
+        $hapus = $this->Model_ulasan->DeleteDataUlasan('ulasan', 'id_ulasan', $a);
+        if($hapus == 1) {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-check"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('Ulasan/ulasan');
+        }else {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-xmark"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('Ulasan/ulasan');
+        }
 	}
 }

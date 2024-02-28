@@ -56,21 +56,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            if(!empty($Laporan)) {
+                        <?php
+                        if (!empty($Laporan)) {
                             $no = 1;
-                            foreach ($Laporan as $l) { 
+                            foreach ($Laporan as $p) { 
+                            $tanggal_pengembalian = new DateTime($p->tanggal_pengembalian);
+                            $tanggal_kembali = new DateTime($p->tanggal_kembalikan);
+
+                            // Periksa apakah pengembalian dilakukan lebih lambat dari tanggal pengembalian
+                            if ($tanggal_kembali > $tanggal_pengembalian) {
+                                $selisih = $tanggal_kembali->diff($tanggal_pengembalian)->format("%a");
+                                $fine_amount = $selisih * 2500; // Rp 2,500 per day
+                                } else {
+                                $fine_amount = 0; // Tidak ada denda jika pengembalian tepat waktu
+                                }
                             ?>
-                            <tr>
-                                <td><?php echo $no; ?></td>
-                                <td><?php echo $l->nama; ?></td>
-                                <td><?php echo $l->judul; ?></td>
-                                <td><?php echo $l->tanggal_peminjaman; ?></td>
-                                <td><?php echo $l->tanggal_pengembalian; ?></td>
-                            </tr>
-                            <?php 
-                            $no++;}
-                        } ?>
+                        <tr>
+                            <td><?php echo $no; ?></td>
+                            <td><?php echo $p->nama; ?></td>
+                            <td><?php echo $p->judul; ?></td>
+                            <td><?php echo $p->tanggal_peminjaman; ?></td>
+                            <td><?php echo $p->tanggal_pengembalian; ?></td>
+                            <td><?php echo $p->tanggal_kembalikan; ?></td>
+                            <td><?php echo 'Rp ' . number_format($fine_amount, 0, ',', '.'); ?></td>
+                        </tr>
+                        <?php
+                        $no++;}
+                        }?>
                         </tbody>
                     </table>
                 </div>

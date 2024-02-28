@@ -18,7 +18,16 @@
                             Tambah Data
                         </button>
                     </div>
+                    <br>
+                    <!-- Tampilan Anda -->
                     <div class="mb-3"><?php echo $this->session->flashdata('msg'); ?></div>
+                    <script>
+                    // Tunggu selama 3 detik setelah halaman dimuat
+                    setTimeout(function() {
+                        // Sembunyikan pesan alert dengan menghapus elemen
+                        document.querySelector('.alert').style.display = 'none';
+                    }, 3000);
+                    </script>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="example1" width="100%" cellspacing="0">
                             <thead>
@@ -64,26 +73,25 @@
                                         <button type=" button" class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#editbuku_<?php echo $b->id_buku; ?>">
                                             <i class="nav-icon fas fa-pen"></i>
-                                            Edit</button>
+                                            </button>
                                         <a href="<?php echo site_url('Buku/hapusbuku/'.$b->id_buku)?>"
                                             onclick="return confirm('Apakah anda ingin menghapus data ?')"
                                             class="btn btn-danger">
                                             <i class="nav-icon fas fa-trash"></i>
-                                            Hapus
+                                            
                                         </a>
                                     </td>
                                 </tr>
                                 <!-- Modal Edit -->
                                 <div class="modal fade" id="editbuku_<?php echo $b->id_buku; ?>" tabindex="-1"
-                                    aria-labelledby="editkategorilabel aria-hidden=" true">
+                                    aria-labelledby="editkategorilabel" aria-hidden=" true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data Buku</h1>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="<?php echo site_url('Buku/updatebuku/') ?>" method="post"
-                                                    class="mx-3">
+                                            <?php echo form_open_multipart('Buku/updatebuku', array('class' => 'mx-3')); ?>
                                                     <div class="">
                                                         <input type="text" name="id_buku" class="form-control"
                                                             value="<?= $b->id_buku; ?>" hidden>
@@ -116,6 +124,14 @@
                                                                 <?php } ?>
                                                         </select>
                                                     </div>
+                                                    <div class="mb-3">
+                                                        <label for="inputJudul" class="form-label">Cover</label>
+                                                            <input type="file" name="gambar" class="form-control-file" id="inputfile" accept="image/*">
+                                                        <?php if ($b->gambar): ?>
+                                                            <p>Current Image: <?= $b->gambar; ?></p>
+                                                            <input type="hidden" name="gambar_lama" value="<?= $b->gambar; ?>">
+                                                        <?php endif; ?>
+                                                        </div>
                                                     <div class="mb-3">
                                                         <label for="editJudul" class="form-label">Judul</label>
                                                         <input type="text" name="judul" class="form-control"
@@ -175,7 +191,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Kategori</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Buku</h1>
                     </div>
                     <div class="modal-body">
                         <?php echo form_open_multipart('Buku/tambahbuku', array('class' => 'mx-3')); ?>
@@ -195,7 +211,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="inputIDDetail" class="form-label">Rak</label>
-                            <select name="kategori" class="form-control" id="InputIDKategori" required>
+                            <select name="rak" class="form-control" id="InputIDKategori" required>
                                 <option value="">Pilih Rak</option>
                                 <?php foreach ($rak as $r) { ?>
                                 <option value="<?php echo $r->id_rak; ?>"><?php echo $r->rak; ?>
@@ -250,20 +266,21 @@
 </div>
 
 <script>
-  $(function () {
+$(function() {
     $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper');
     $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
     });
-  });
+});
 </script>
-          

@@ -61,6 +61,7 @@
     <!-- Select2 JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
+
 </head>
 
 
@@ -175,17 +176,34 @@
                             </ul>
                         </li>
                         <?php } else if ($this->session->userdata('level') == 'peminjam') { ?>
-                        <li class="nav-item">
-                            <a href="<?php echo base_url(); ?>Peminjaman/peminjaman" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
+                            <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-shopping-cart"></i>
                                 <p>
-                                    Peminjaman
+                                    Transaksi
+                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
-                        </li>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>Peminjaman/peminjaman" class="nav-link">
+                                        <i class="nav-icon fas fa-book"></i>
+                                        <p>
+                                            Peminjaman
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?php echo base_url(); ?>Pengembalian/pengembalian" class="nav-link">
+                                        <i class="nav-icon fas fa-book"></i>
+                                        <p>
+                                            History Peminjaman
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <?php } ?>
-
                         <?php if ($this->session->userdata('level') == 'peminjam'){ ?>
                         <li class="nav-item">
                             <a href="<?php echo base_url(); ?>Ulasan/ulasan" class="nav-link">

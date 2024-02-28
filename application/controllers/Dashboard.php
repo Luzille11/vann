@@ -19,12 +19,13 @@ class Dashboard extends CI_Controller
         $data['jmluser'] = $this->Model_user->getDataUser()->num_rows();
         $data['buku'] = $this->Model_buku->getDataBuku()->result();
         $data['peminjaman'] = $this->Model_peminjaman->getDataPeminjaman()->result();
+        $dataPengembalian = $this->Model_peminjaman->get_pengembalian_perbulan();
         $dataPeminjaman = $this->Model_peminjaman->get_peminjaman_perbulan();
 
         // Inisialisasi data bulan dengan jumlah peminjaman 0
         $allMonths = array(
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
+            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
         );
 
         $formattedData = array();
@@ -32,17 +33,33 @@ class Dashboard extends CI_Controller
         foreach ($allMonths as $month) {
             $formattedData[] = array(
                 'bulan' => $month,
-                'jumlah_peminjaman' => 0
+                'jumlah_pengembalian' => 0
             );
         }
 
+        // Update data peminjaman yang ada
+        foreach ($dataPengembalian as $item) {
+            $index = array_search($item->bulan, $allMonths);
+            $formattedData[$index]['jumlah_pengembalian'] = $item->jumlah_pengembalian;
+        }
         // Update data peminjaman yang ada
         foreach ($dataPeminjaman as $item) {
             $index = array_search($item->bulan, $allMonths);
             $formattedData[$index]['jumlah_peminjaman'] = $item->jumlah_peminjaman;
         }
 
+        $data['dataPengembalian'] = json_encode($formattedData);
         $data['dataPeminjaman'] = json_encode($formattedData);
         $this->template->load('template/template','dashboard/dashboard', $data);
     }           
+
+    public function pencarian() {
+        $keyword = $this->input->get('keyword');
+    
+        // Lakukan pencarian di model (gantilah dengan model dan logika pencarian sesuai kebutuhan)
+        $data['buku'] = $this->Model_buku->cariData($keyword)->result();
+    
+        // Tampilkan hasil pencarian di tampilan
+        $this->template->load('template/template','dashboard/dashboard', $data);
+    }
 }

@@ -103,17 +103,39 @@ class User extends CI_Controller
 	{
 		$a = $this->uri->segment(3);
 
-		$this->Model_user->DeleteDataPetugas('user', 'id_user', $a);
-
-		redirect('User/petugas');
+        $hapus = $this->Model_petugas->DeleteDataPetugas('user', 'id_user', $a);
+        if($hapus == 1) {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-check"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('User/petugas');
+        }else {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-xmark"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('User/petugas');
+        }
 	}
     public function hapusUser()
 	{
 		$a = $this->uri->segment(3);
 
-		$this->Model_user->DeleteDataPetugas('user', 'id_user', $a);
-
-		redirect('User/peminjam');
+        $hapus = $this->Model_user->DeleteDataUser('user', 'id_user', $a);
+        if($hapus == 1) {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-check"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('User/peminjam');
+        }else {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-xmark"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('User/peminjam');
+        }
 	}
 
     public function approve_user($id_user) {

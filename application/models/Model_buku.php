@@ -82,4 +82,23 @@ class Model_Buku extends CI_Model
         $this->db->where('id_user', $id_user);
         $this->db->update('peminjaman', $data);
     }
+
+    public function cariData($keyword) {
+        $this->db->join('kategori','buku.id_kategori = kategori.id_kategori');
+        $this->db->like('kategori', $keyword);
+        $this->db->or_like('gambar', $keyword);
+        $this->db->or_like('judul', $keyword);
+        $this->db->or_like('penulis', $keyword);
+        $this->db->or_like('penerbit', $keyword);
+        $this->db->or_like('tahun_terbit', $keyword);
+        $this->db->or_like('deskripsi', $keyword);
+        return $this->db->get('buku');
+    }
+
+    public function getGambarById($id_buku)
+    {
+        $this->db->select('gambar');
+        $this->db->where('id_buku', $id_buku);
+        return $this->db->get('buku')->row()->gambar;
+    }
 }

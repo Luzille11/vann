@@ -41,6 +41,7 @@ class Model_User extends CI_Model
     {
         $this->db->where($fieldid,$fieldvalue)->delete($tabel);
     }
+    
     function DeleteDataUser($tabel,$fieldid,$fieldvalue)
     {
         $this->db->where($fieldid,$fieldvalue)->delete($tabel);

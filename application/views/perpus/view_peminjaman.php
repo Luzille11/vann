@@ -11,13 +11,13 @@
         <div class="row">
             <div class="col-md-12">
                 <?php if ($this->session->userdata('level') == 'peminjam'){ ?>
-                <div>
+                <!--<div>
                     <button type="button" class="btn btn-success " data-bs-toggle="modal"
                         data-bs-target="#tambahpeminjaman">
                         <i class="nav-icon fas fa-plus"></i>
                         Tambah Data
                     </button>
-                </div>
+                </div>-->
                 <?php } ?>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="dataTable" class="display" width="100%"
@@ -30,8 +30,8 @@
                                 <th>Tanggal Peminjaman</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Status Peminjaman</th>
-                                <?php if ($this->session->userdata('level') == 'admin' || $this->session->userdata('level') == 'petugas'){ ?>
                                 <th>Denda</th>
+                                <?php if ($this->session->userdata('level') == 'admin' || $this->session->userdata('level') == 'petugas'){ ?>
                                 <th>Aksi</th>
                                 <?php } ?>
                             </tr>
@@ -69,8 +69,8 @@
                                     }
                                     ?>
                                 </td>
-                                <?php if ($this->session->userdata('level') == 'admin' || $this->session->userdata('level') == 'petugas'){ ?>
                                 <td>Rp <?php echo number_format($fine_amount, 0, ',', '.'); ?></td>
+                                <?php if ($this->session->userdata('level') == 'admin' || $this->session->userdata('level') == 'petugas'){ ?>
                                 <td>
                                     <a href="<?php echo site_url('Peminjaman/kembalikan/'. $p->id_peminjaman) ?>"
                                         onclick="return confirm('Apakah anda yakin ingin Mengembalikan Buku ini?')"
@@ -133,18 +133,17 @@ $tanggal_pengembalian = date('Y-m-d', $tujuh_hari);
                         </div>-->
                         <div class="mb-3">
                             <label for="inputBuku" class="form-label">Buku</label>
-                            <select name="buku" id="id_buku" class="form-control" required>
-                                <datalist id="bukuList">
+                            <input list="bukuList" name="buku" id="id_buku" class="form-control"
+                                placeholder="Pilih Buku" required>
+                            <datalist id="bukuList">
                                 <option value="">Pilih Buku</option>
-                                    <?php foreach ($buku as $b) { ?>
+                                <?php foreach ($buku as $b) { ?>
                                 <option value="<?php echo $b->id_buku; ?>">
                                     <?php echo $b->judul; ?>
                                 </option>
                                 <?php } ?>
-                                <datalist id="bukuList">
-                            </select>
+                            </datalist>
                         </div>
-
                         <div class="mb-3">
                             <label for="inputTanggalPeminjaman" class="form-label">Tanggal
                                 Peminjaman</label>
@@ -157,58 +156,67 @@ $tanggal_pengembalian = date('Y-m-d', $tujuh_hari);
                             <input type="date" name="tanggal_pengembalian" value="<?= $tanggal_pengembalian; ?>"
                                 class="form-control" readonly>
                         </div>
+                        <div class=" modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Pinjam</button>
+                        </div>
                     </form>
                 </div>
-                <script>
-                $('#id_buku').change(function() {
-                    var id = $(this).val();
-                    $.ajax({
-                        url: '<?php echo site_url('Peminjaman/jumlah_buku'); ?>',
-                        data: {
-                            id: id
-                        },
-                        method: 'post',
-                        dataType: 'json',
-                        success: function(hasil) {
-                            var jumlah = JSON.stringify(hasil.jumlah);
-                            var jumlah1 = jumlah.split('"').join('');
-                            if (jumlah1 <= 0) {
-                                alert('Maaf, Stok untuk buku ini sedang kosong!');
-                                location.reload();
-                            }
-                        }
-                    });
-                });
-                </script>
-                <div class=" modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Tambah</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-  $(function () {
+$(function() {
     $("#dataTable").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
     });
-  });
+});
 </script>
 
+<script>
+$('#id_buku').change(function() {
+    var id = $(this).val();
+    $.ajax({
+        url: '<?php echo site_url('Peminjaman/jumlah_buku'); ?>',
+        data: {
+            id: id
+        },
+        method: 'post',
+        dataType: 'json',
+        success: function(hasil) {
+            var jumlah = JSON.stringify(hasil.jumlah);
+            var jumlah1 = jumlah.split('"').join('');
+            if (jumlah1 <= 0) {
+                alert('Maaf, Stok untuk buku ini sedang kosong!');
+                location.reload();
+            }
+        }
+    });
+});
+</script>
 
+<script>
+// Menggunakan JavaScript untuk mendapatkan nilai tersembunyi
+document.getElementById('id_buku').addEventListener('input', function() {
+    var selectedOption = document.querySelector('#bukuList option[value="' + this.value + '"]');
+    var hiddenData = selectedOption ? selectedOption.getAttribute('data-id-buku') : '';
 
-
-          
+    // Lakukan sesuatu dengan nilai dan data tersembunyi
+    console.log("Nilai terpilih: " + this.value);
+    console.log("Data tersembunyi: " + hiddenData);
+});
+</script>

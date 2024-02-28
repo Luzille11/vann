@@ -21,18 +21,16 @@ class Peminjaman extends CI_Controller
         $this->template->load('template/template', 'perpus/view_peminjaman', $data);
     }
 
-    function tambahPeminjaman()
+    public function tambahPeminjaman()
     {
         if ($this->session->userdata('id_user')) {
-            $id_peminjaman = $this->input->post('id_peminjaman');
-            $buku = $this->input->post('buku');
-            $tanggal_peminjaman = $this->input->post('tanggal_peminjaman');
-            $tanggal_pengembalian = $this->input->post('tanggal_pengembalian');
+            $id_buku = $this->input->post('id_buku');
+            $tanggal_peminjaman = date('Y-m-d');
+            $tanggal_pengembalian = date('Y-m-d', strtotime('+7 days'));
     
             $data = array(
-                'id_peminjaman' => $id_peminjaman,
                 'id_user' => $this->session->userdata('id_user'),
-                'id_buku' => $buku,
+                'id_buku' => $id_buku,
                 'tanggal_peminjaman' => $tanggal_peminjaman,
                 'tanggal_pengembalian' => $tanggal_pengembalian,
             );
@@ -57,11 +55,13 @@ class Peminjaman extends CI_Controller
 
 
     public function jumlah_buku()
-    {
-        $id = $this->input->post('id');
-        $data = $this->Model_peminjaman->jumlah_buku($id);
-        echo json_encode($data);
-    }
+{
+    $id = $this->input->post('id');
+    $data = $this->Model_peminjaman->jumlah_buku($id);
+
+    header('Content-Type: application/json'); // Set header sebagai JSON
+    echo json_encode(['jumlah' => $data]);
+}
 
     public function kembalikan($id) 
     {

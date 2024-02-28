@@ -10,57 +10,65 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-bordered" id="example1" class="display" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Email</th>
-                            <th>Alamat</th>
-                            <th>No Telepon</th>
-                            <th>Level</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if(!empty($Peminjam)) {
-                        $no = 1;
-                        foreach ($Peminjam as $p) { 
-                        ?>
-                        <tr>
-                            <td><?php echo $no; ?></td>
-                            <td><?php echo $p->nama; ?></td>
-                            <td><?php echo $p->username; ?></td>
-                            <td><?php echo str_repeat('*', strlen($p->password)); ?></td>
-                            <td><?php echo $p->email; ?></td>
-                            <td><?php echo $p->alamat; ?></td>
-                            <td><?php echo $p->no_telp; ?></td>
-                            <td><?php echo $p->level; ?></td>
-                            <td>
-                                <span class="badge <?= ($p->status == 0) ? 'badge-warning' : 'badge-success'; ?>">
-                                    <?= ($p->status == 0) ? 'Pending' : 'Approved'; ?>
-                                </span>
-                            </td>
-                            <td>
-                                <?php if ($p->status == 0): ?>
-                                <a class="btn btn-success"
-                                    href="<?= base_url('User/approve_user/' . $p->id_user); ?>">Approve</a>
-                                <?php else: ?>
-                                <a class="btn btn-danger"
-                                    href="<?= base_url('User/hapusUser/' . $p->id_user); ?>">Hapus</a>
-                                <?php endif; ?>
-                            </td 
-                        </tr>
-
-                            <?php 
-                        $no++;}
-                    } ?>
-                    </tbody>
-                </table>
+                    <!-- Tampilan Anda -->
+                    <div class="mb-3"><?php echo $this->session->flashdata('msg'); ?></div>
+                    <script>
+                    // Tunggu selama 3 detik setelah halaman dimuat
+                    setTimeout(function() {
+                    // Sembunyikan pesan alert dengan menghapus elemen
+                    document.querySelector('.alert').style.display = 'none';
+                    }, 3000);
+                    </script>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="example1" class="display" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Alamat</th>
+                                <th>No Telepon</th>
+                                <th>Level</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if(!empty($Peminjam)) {
+                            $no = 1;
+                            foreach ($Peminjam as $p) { 
+                            ?>
+                            <tr>
+                                <td><?php echo $no; ?></td>
+                                <td><?php echo $p->nama; ?></td>
+                                <td><?php echo $p->username; ?></td>
+                                <td><?php echo $p->email; ?></td>
+                                <td><?php echo $p->alamat; ?></td>
+                                <td><?php echo $p->no_telp; ?></td>
+                                <td><?php echo $p->level; ?></td>
+                                <td>
+                                    <span class="badge <?= ($p->status == 0) ? 'badge-warning' : 'badge-success'; ?>">
+                                        <?= ($p->status == 0) ? 'Pending' : 'Approved'; ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <?php if ($p->status == 0): ?>
+                                    <a class="btn btn-success"
+                                        href="<?= base_url('User/approve_user/' . $p->id_user); ?>">Approve</a>
+                                    <?php else: ?>
+                                    <a class="btn btn-danger"
+                                        href="<?= base_url('User/hapusUser/' . $p->id_user); ?>"><i class="nav-icon fas fa-trash"></i></a>
+                                    <?php endif; ?>
+                                </td 
+                            </tr>
+                                <?php 
+                            $no++;}
+                        } ?>
+                        </tbody>
+                    </table>
+                </div>                 
             </div>
         </div>
     </div>

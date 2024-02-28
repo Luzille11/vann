@@ -7,19 +7,28 @@
 </div><!-- /.row -->
 
 <style>
-.star-container {
-    display: flex;
-}
+        .star-container {
+            display: flex;
+        }
 
-.star {
-    width: 20px;
-    /* Sesuaikan dengan ukuran yang diinginkan */
-    height: 20px;
-    /* Sesuaikan dengan ukuran yang diinginkan */
-    margin-right: 5px;
-    /* Sesuaikan dengan jarak antar bintang */
-}
-</style>
+        .star {
+            font-size: 15px; /* Sesuaikan dengan ukuran yang diinginkan */
+            margin-right: 5px; /* Sesuaikan dengan jarak antar bintang */
+            width: 20px; /* Sesuaikan dengan ukuran bintang kosong */
+            height: 20px; /* Sesuaikan dengan ukuran bintang kosong */
+            background-image: url('assets/dist/img/star-removebg-preview.png'); /* Ganti dengan path gambar bintang kosong */
+            background-size: cover;
+        }
+
+        .filled-star {
+            color: #ffd700; /* Warna bintang diisi (warna kuning dalam contoh) */
+        }
+
+        .empty-star {
+            font-size: 15px; /* Sesuaikan dengan ukuran yang diinginkan */
+            background-image: none; /* Hapus gambar latar belakang */
+        }
+    </style>
 
 <div class="card">
     <div class="card-body">
@@ -32,13 +41,23 @@
                         Tambah Data
                     </button>
                 </div>
-                <div class="mb-3"><?php echo $this->session->flashdata('msg'); ?></div>
-                <div class="table-responsive">
+                <br>
+                    <!-- Tampilan Anda -->
+                    <div class="mb-3"><?php echo $this->session->flashdata('msg'); ?></div>
+                    <script>
+                    // Tunggu selama 3 detik setelah halaman dimuat
+                    setTimeout(function() {
+                    // Sembunyikan pesan alert dengan menghapus elemen
+                    document.querySelector('.alert').style.display = 'none';
+                    }, 3000);
+                    </script>                 
+                    <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="example1" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>User</th>
+                                <th>Cover</th>
                                 <th>Buku</th>
                                 <th>Ulasan</th>
                                 <th>Rating</th>
@@ -54,34 +73,46 @@
                             <tr>
                                 <td><?php echo $no; ?></td>
                                 <td><?php echo $u->nama; ?></td>
+                                <td>                                        <!-- Menampilkan gambar dengan tag <img> -->
+                                    <?php
+                                    $gambar_url = base_url('assets/dist/img/') . $u->gambar;
+                                    ?>
+                                    <img src="<?php echo $gambar_url; ?>" alt="Cover <?php echo $u->judul; ?>"
+                                    style="height: 150px;" width="100%">
+                                </td>
                                 <td><?php echo $u->judul; ?></td>
                                 <td><?php echo $u->ulasan; ?></td>
                                 <td>
-                                    <div class="star-container">
-                                        <?php
-                                $rating = $u->rating; // Ambil nilai rating dari database
-                                for ($i = 1; $i <= $rating; $i++) {
-                                    echo '<img class="star" src="' . base_url('assets/dist/img/star-removebg-preview.png') . '" alt="star">';
-                                }
-                                ?>
+                                <?php
+                                $rating = 5; 
+
+                                echo '<div class="star-container">';
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $u->rating) {
+                                            echo '<div class="star filled-star">⭐</div>';
+                                        } else {
+                                        echo '<div class="star empty-star">☆</div>';
+                                        }
+                                    } echo '</div>';
+                                    ?>
                                 </td>
                                 <?php if ($this->session->userdata('id_user') == $u->id_user): ?>
                                 <td>
                                     <button type=" button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editulasan_<?php echo $u->id_ulasan; ?>">
                                         <i class="nav-icon fas fa-pen"></i>
-                                        Edit</button>
+                                        </button>
                                     <a href="<?php echo site_url('Ulasan/hapusulasan/'. $u->id_ulasan)?>"
                                         onclick="return confirm('Apakah anda ingin menghapus data ?')"
                                         class="btn btn-danger">
                                         <i class="nav-icon fas fa-trash"></i>
-                                        Hapus</a>
+                                        </a>
                                 </td>
                                 <?php endif; ?>
                             </tr>
 
                             <div class="modal fade" id="editulasan_<?php echo $u->id_ulasan; ?>" tabindex="-1"
-                                aria-labelledby="editulasanlabel aria-hidden=" true">
+                                aria-labelledby="editulasanlabel" aria-hidden=" true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -94,7 +125,7 @@
                                                     <input type="text" name="id_ulasan" class="form-control"
                                                         value="<?= $u->id_ulasan; ?>" hidden>
                                                 </div>
-                                                <div class="mb-3">
+                                                <!--<div class="mb-3">
                                                     <label for="editIDDetail" class="form-label">User</label>
                                                     <select name="user" class="form-control" required>
                                                         <div class="mb-3">
@@ -106,7 +137,7 @@
                                                             </option>
                                                             <?php } ?>
                                                     </select>
-                                                </div>
+                                                </div>-->
                                                 <div class="mb-3">
                                                     <label for="editIDDetail" class="form-label">User</label>
                                                     <select name="buku" class="form-control" required>
@@ -172,8 +203,7 @@
                             <input type="text" name="id_ulasan" class="form-control" id="inputBuku" hidden>
                         </div>
                         <div class="mb-3">
-                            <label for="inputIDDetail" class="form-label">User</label>
-                            <select name="user" class="form-control" required>
+                            <select name="user" class="form-control" required hidden>
                                 <?php foreach ($user as $u) { ?>
                                 <?php if ($u->id_user == $this->session->userdata('id_user')) { ?>
                                 <option value="<?php echo $u->id_user; ?>" selected>

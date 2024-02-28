@@ -25,9 +25,20 @@ class Rak extends CI_Controller
 	{
 		$a = $this->uri->segment(3);
 
-		$this->Model_kategori->DeleteDataKategori('rak', 'id_rak', $a);
-
-		redirect('Rak/rak');
+        $hapus = $this->Model_rak->DeleteDataRak('rak', 'id_rak', $a);
+        if($hapus == 1) {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-check"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('Rak/rak');
+        }else {
+            $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
+            <i class="nav-icon fas fa-xmark"></i>
+            Data Berhasil Dihapus!
+            </div>');
+            redirect('Rak/rak');
+        }
 	}
 
     function tambahrak()
@@ -46,7 +57,7 @@ class Rak extends CI_Controller
             <i class="nav-icon fas fa-check"></i>
             Data Berhasil Disimpan!
             </div>');
-            redirect('rak/rak');
+            redirect('Rak/rak');
         }else {
             $this->session->set_flashdata('msg','<div class="alert alert-danger" role="alert">
             <i class="nav-icon fas fa-xmark"></i>
@@ -77,6 +88,7 @@ class Rak extends CI_Controller
             <i class="nav-icon fas fa-xmark"></i>
             Edit Data Gagal !
             </div>');
+            redirect('Rak/rak');
         }
     }
 
